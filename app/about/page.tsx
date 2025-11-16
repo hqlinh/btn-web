@@ -1,7 +1,13 @@
+// "use client";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+// import { useEffect } from "react";
+import { BlogService } from "@/services/blog/blog.service";
 
 export default function AboutPage() {
+  const blogService = new BlogService();
+  blogService.getPublishedBlog();
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
@@ -149,4 +155,3 @@ export default function AboutPage() {
     </div>
   );
 }
-
