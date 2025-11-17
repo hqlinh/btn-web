@@ -5,7 +5,7 @@ const NOTION_DATABASE_ID = process.env.NEXT_PUBLIC_NOTION_DB_ID as string;
 const NOTION_DATA_SOURCE_ID = process.env
   .NEXT_PUBLIC_NOTION_DATA_SOURCE_ID as string;
 
-export class BlogService {
+class BlogService {
   private readonly notionClient: Client;
 
   constructor() {
@@ -68,3 +68,5 @@ export class BlogService {
     });
   }
 }
+
+export const blogService = new BlogService();
