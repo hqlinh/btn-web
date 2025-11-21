@@ -1,7 +1,6 @@
 import { Blog } from "@/types";
-import { Client, PageObjectResponse } from "@notionhq/client";
+import { Client } from "@notionhq/client";
 
-const NOTION_DATABASE_ID = process.env.NEXT_PUBLIC_NOTION_DB_ID as string;
 const NOTION_DATA_SOURCE_ID = process.env
   .NEXT_PUBLIC_NOTION_DATA_SOURCE_ID as string;
 
@@ -37,7 +36,7 @@ class BlogService {
   }
 
   private transformBlog(blogs: any[]): Blog[] {
-    return blogs.map((blog) => {
+    return blogs.map((blog: any) => {
       const title = blog.properties.Name.title[0].plain_text;
       const description = blog.properties.Description.rich_text[0].plain_text;
       const createdAt = blog.created_time;
