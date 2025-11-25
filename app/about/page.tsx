@@ -1,12 +1,7 @@
-// "use client";
-
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-// import { useEffect } from "react";
-import { blogService } from "@/services/blog/blog.service";
 
-export default function AboutPage() {
-  blogService.getPublishedBlog();
+export default async function AboutPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />

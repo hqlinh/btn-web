@@ -35,12 +35,14 @@ class BlogService {
     return this.transformBlog(dataSource.results);
   }
 
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   private transformBlog(blogs: any[]): Blog[] {
     return blogs.map((blog: any) => {
       const title = blog.properties.Name.title[0].plain_text;
       const description = blog.properties.Description.rich_text[0].plain_text;
       const createdAt = blog.created_time;
       const tags = blog.properties.Tags.multi_select.map(
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
         (tag: any) => tag.name
       );
       const slug = blog.properties.Slug.formula.string;
