@@ -13,8 +13,9 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Bty Web",
-  description: "Bty Web",
+  title: "BTY",
+  description:
+    "BTY means Better Than Yesterday. It's a personal blog. I'm a software engineer and I'm trying to learn more about the world. I'm trying to be a better person every day.",
 };
 
 export default function RootLayout({

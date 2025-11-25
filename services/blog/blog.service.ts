@@ -1,7 +1,6 @@
 import { Blog } from "@/types";
-import { Client, PageObjectResponse } from "@notionhq/client";
+import { Client } from "@notionhq/client";
 
-const NOTION_DATABASE_ID = process.env.NEXT_PUBLIC_NOTION_DB_ID as string;
 const NOTION_DATA_SOURCE_ID = process.env
   .NEXT_PUBLIC_NOTION_DATA_SOURCE_ID as string;
 
@@ -10,7 +9,7 @@ class BlogService {
 
   constructor() {
     this.notionClient = new Client({
-      auth: process.env.NEXT_PUBLIC_NOTION_SECRET_KEY,
+      auth: process.env.NOTION_SECRET_KEY,
     });
   }
 
@@ -36,12 +35,14 @@ class BlogService {
     return this.transformBlog(dataSource.results);
   }
 
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
   private transformBlog(blogs: any[]): Blog[] {
-    return blogs.map((blog) => {
+    return blogs.map((blog: any) => {
       const title = blog.properties.Name.title[0].plain_text;
       const description = blog.properties.Description.rich_text[0].plain_text;
       const createdAt = blog.created_time;
       const tags = blog.properties.Tags.multi_select.map(
+        //eslint-disable-next-line @typescript-eslint/no-explicit-any
         (tag: any) => tag.name
       );
       const slug = blog.properties.Slug.formula.string;

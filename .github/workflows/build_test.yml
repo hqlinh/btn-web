@@ -34,6 +34,7 @@ jobs:
         run: yarn lint
 
       - name: Build
-        run: |
-          cp .env.example .env
-          yarn build
+        env:
+          NOTION_SECRET_KEY: ${{ env.NOTION_SECRET_KEY }}
+          NEXT_PUBLIC_NOTION_DATA_SOURCE_ID: ${{ env.NEXT_PUBLIC_NOTION_DATA_SOURCE_ID }}
+        run: yarn build
