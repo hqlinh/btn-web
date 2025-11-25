@@ -53,8 +53,9 @@ export default function ContactPage() {
             Get in Touch
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Have a question or want to work together? We'd love to hear from
-            you. Send us a message and we'll respond as soon as possible.
+            Have a question or want to work together? We&apos;d love to hear
+            from you. Send us a message and we&apos;ll respond as soon as
+            possible.
           </p>
         </div>
 
@@ -292,4 +293,3 @@ export default function ContactPage() {
     </div>
   );
 }
-

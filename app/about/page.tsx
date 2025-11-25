@@ -1,13 +1,7 @@
-// "use client";
-
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-// import { useEffect } from "react";
-import { BlogService } from "@/services/blog/blog.service";
 
-export default function AboutPage() {
-  const blogService = new BlogService();
-  blogService.getPublishedBlog();
+export default async function AboutPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
@@ -72,7 +66,8 @@ export default function AboutPage() {
         {/* Introduction Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
-            I'm John Doe, A content writer based in LDN, currently at Bookworm
+            I&apos;m John Doe, A content writer based in LDN, currently at
+            Bookworm
           </h1>
 
           {/* Social Media Links */}

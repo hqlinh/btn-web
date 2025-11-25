@@ -2,7 +2,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import SimilarPosts from "../../components/SimilarPosts";
 
-export default function BlogDetailPage({ params }: { params: { id: string } }) {
+export default function BlogDetailPage() {
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
@@ -177,4 +177,3 @@ export default function BlogDetailPage({ params }: { params: { id: string } }) {
     </div>
   );
 }
-
