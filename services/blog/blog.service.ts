@@ -9,7 +9,7 @@ class BlogService {
 
   constructor() {
     this.notionClient = new Client({
-      auth: process.env.NEXT_PUBLIC_NOTION_SECRET_KEY,
+      auth: process.env.NOTION_SECRET_KEY,
     });
   }
 
