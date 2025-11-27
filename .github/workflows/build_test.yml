@@ -35,6 +35,6 @@ jobs:
 
       - name: Build
         env:
-          NOTION_SECRET_KEY: ${{ env.NOTION_SECRET_KEY }}
-          NEXT_PUBLIC_NOTION_DATA_SOURCE_ID: ${{ env.NEXT_PUBLIC_NOTION_DATA_SOURCE_ID }}
+          NOTION_SECRET_KEY: ${{ vars.NOTION_SECRET_KEY }}
+          NEXT_PUBLIC_NOTION_DATA_SOURCE_ID: ${{ vars.NEXT_PUBLIC_NOTION_DATA_SOURCE_ID }}
         run: yarn build
