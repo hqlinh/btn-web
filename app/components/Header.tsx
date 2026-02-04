@@ -35,33 +35,13 @@ export default function Header() {
               href="/"
               className="text-3xl font-serif font-bold text-gray-900"
             >
-              Stablo
+              groweveryday
             </Link>
           </div>
 
           {/* Right Navigation */}
           <nav className="flex items-center gap-6">
-            <Link
-              href="/archive"
-              className="text-gray-700 hover:text-gray-900 font-medium transition-colors"
-            >
-              Archive
-            </Link>
-            <Link
-              href="/pro"
-              className="text-gray-700 hover:text-gray-900 font-medium transition-colors flex items-center gap-1"
-            >
-              Pro Version
-              <span className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded">
-                new
-              </span>
-            </Link>
-            <Link
-              href="/download"
-              className="text-gray-700 hover:text-gray-900 font-medium transition-colors"
-            >
-              Download
-            </Link>
+            {/* Right navigation items removed */}
           </nav>
         </div>
       </div>

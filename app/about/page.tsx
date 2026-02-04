@@ -1,5 +1,30 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import type { Metadata } from "next";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groweveryday.com";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Learn more about groweveryday - A personal blog dedicated to continuous learning, software engineering, and personal growth. Better Than Yesterday.",
+  openGraph: {
+    title: "About | groweveryday",
+    description:
+      "Learn more about groweveryday - A personal blog dedicated to continuous learning, software engineering, and personal growth.",
+    url: `${siteUrl}/about`,
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "About | groweveryday",
+    description:
+      "Learn more about groweveryday - A personal blog dedicated to continuous learning, software engineering, and personal growth.",
+  },
+  alternates: {
+    canonical: `${siteUrl}/about`,
+  },
+};
 
 export default async function AboutPage() {
   return (

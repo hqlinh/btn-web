@@ -3,9 +3,31 @@ import Footer from "./components/Footer";
 import Link from "next/link";
 import { blogService } from "@/services/blog/blog.service";
 import { formatDate } from "@/utils";
+import type { Metadata } from "next";
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groweveryday.com";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Welcome to groweveryday - A personal blog about software engineering, web development, and personal growth. Discover articles, tutorials, and insights to help you become better than yesterday.",
+  openGraph: {
+    title: "groweveryday - Better Than Yesterday",
+    description:
+      "Welcome to groweveryday - A personal blog about software engineering, web development, and personal growth.",
+    url: siteUrl,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "groweveryday - Better Than Yesterday",
+    description:
+      "Welcome to groweveryday - A personal blog about software engineering, web development, and personal growth.",
+  },
+};
 
 export default async function Home() {
-  const blogs = await blogService.getPublishedBlog();
+  const { blogs, hasMore } = await blogService.getPublishedBlog();
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
@@ -14,7 +36,7 @@ export default async function Home() {
       <main className="container mx-auto px-4 py-12 max-w-7xl">
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {[blogs[0], blogs[1]].map((blog) => (
+          {[blogs[0], blogs[0]].map((blog) => (
             <Link href={`/blog/${blog.slug}`} key={blog.id}>
               <article className="cursor-pointer group">
                 {/* Article Image */}
@@ -99,11 +121,13 @@ export default async function Home() {
         </div>
 
         {/* View all Posts Button */}
-        <div className="flex justify-center">
-          <button className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
-            View all Posts
-          </button>
-        </div>
+        {hasMore && (
+          <div className="flex justify-center">
+            <button className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
+              View all Posts
+            </button>
+          </div>
+        )}
       </main>
 
       <Footer />

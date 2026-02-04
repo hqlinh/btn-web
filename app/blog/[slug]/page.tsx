@@ -1,16 +1,96 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import SimilarPosts from "../../components/SimilarPosts";
+import { blogService } from "@/services/blog/blog.service";
+import { formatDate } from "@/utils";
+import { notFound } from "next/navigation";
+import Markdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import type { Metadata } from "next";
 
-export default function BlogDetailPage() {
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groweveryday.com";
+
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({
+  params,
+}: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const blog = await blogService.getBlogBySlug(slug);
+
+  if (!blog) {
+    return {
+      title: "Post Not Found",
+    };
+  }
+
+  const url = `${siteUrl}/blog/${slug}`;
+  const description =
+    blog.description.length > 160
+      ? blog.description.substring(0, 157) + "..."
+      : blog.description;
+
+  return {
+    title: blog.title,
+    description,
+    keywords: blog.tags,
+    authors: [{ name: "groweveryday" }],
+    openGraph: {
+      title: blog.title,
+      description,
+      url,
+      type: "article",
+      publishedTime: blog.createdAt,
+      authors: ["groweveryday"],
+      tags: blog.tags,
+      images: blog.cover
+        ? [
+            {
+              url: blog.cover,
+              width: 1200,
+              height: 630,
+              alt: blog.title,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description,
+      images: blog.cover ? [blog.cover] : [],
+    },
+    alternates: {
+      canonical: url,
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  const { blogs } = await blogService.getPublishedBlog();
+  return blogs.map((blog) => ({
+    slug: blog.slug,
+  }));
+}
+
+export default async function BlogDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const blog = await blogService.getBlogBySlug(slug);
+
+  if (!blog) {
+    notFound();
+  }
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header />
 
-      <main className="container mx-auto px-4 py-12 flex-grow max-w-4xl">
+      <main className="container mx-auto px-4 py-12 grow max-w-4xl">
         {/* Article Title */}
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-6">
-          DIY Paper Diamond Tutorial with HUNGRY HEART
+          {blog.title}
         </h1>
 
         {/* Author and Date */}
@@ -29,80 +109,56 @@ export default function BlogDetailPage() {
               />
             </svg>
           </div>
-          <span className="font-medium">Mark Dinn</span>
+          <span className="font-medium">Author</span>
           <span>•</span>
-          <span>11 Aug 2022</span>
-          <span>•</span>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 bg-teal-500 rounded"></div>
-            <span>Art</span>
-          </div>
+          <span>{formatDate(blog.createdAt)}</span>
+          {blog.tags.length > 0 && (
+            <>
+              <span>•</span>
+              <div className="flex items-center gap-1">
+                <div className="w-4 h-4 bg-teal-500 rounded"></div>
+                <span>{blog.tags[0]}</span>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Featured Image */}
-        <div className="w-full h-[400px] bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg mb-8 flex items-center justify-center overflow-hidden">
-          {/* 5 Bananas illustration */}
-          <div className="flex items-center justify-center gap-3">
-            <div className="w-16 h-24 bg-blue-600 rounded-full transform -rotate-12"></div>
-            <div className="w-16 h-24 bg-yellow-400 rounded-full transform rotate-6"></div>
-            <div className="w-16 h-24 bg-blue-600 rounded-full transform -rotate-6"></div>
-            <div className="w-16 h-24 bg-blue-600 rounded-full transform rotate-12"></div>
-            <div className="w-16 h-24 bg-blue-600 rounded-full transform -rotate-6 relative">
-              <div className="absolute top-4 left-2 w-12 h-16 bg-white rounded-full"></div>
-            </div>
-          </div>
-        </div>
+        {blog.cover && (
+          <div
+            className="w-full h-[400px] rounded-lg mb-8 overflow-hidden"
+            style={{
+              backgroundImage: `url(${blog.cover})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+        )}
 
         {/* Article Content */}
-        <article className="prose prose-lg max-w-none">
-          <p className="text-gray-700 leading-relaxed mb-6">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur.
-          </p>
-
-          <p className="text-gray-700 leading-relaxed mb-8">
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-            officia deserunt mollit anim id est laborum. Sed ut perspiciatis
-            unde omnis iste natus error sit voluptatem accusantium doloremque
-            laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
-            veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-          </p>
-
-          {/* Quote Section */}
-          <div className="border-l-4 border-teal-500 pl-6 my-8 italic text-gray-700 text-lg">
-            <p>
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-              aut fugit, sed quia consequuntur magni dolores eos qui ratione
-              voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem
-              ipsum quia dolor sit amet.
-            </p>
-          </div>
-
-          {/* Main Article Text */}
-          <p className="text-gray-700 leading-relaxed mb-8">
-            At vero eos et accusamus et iusto odio dignissimos ducimus qui
-            blanditiis praesentium voluptatum deleniti atque corrupti quos
-            dolores et quas molestias excepturi sint occaecati cupiditate non
-            provident, similique sunt in culpa qui officia deserunt mollitia
-            animi, id est laborum et dolorum fuga.
-          </p>
-        </article>
+        {blog.markdown && (
+          <article className="markdown-content">
+            <Markdown rehypePlugins={[rehypeRaw]}>
+              {blog.markdown}
+            </Markdown>
+          </article>
+        )}
 
         {/* Tags and Social Share */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mt-12 pt-8 border-t border-gray-200">
           {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors cursor-pointer">
-              #Diy
-            </span>
-            <span className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors cursor-pointer">
-              #Toy
-            </span>
-          </div>
+          {blog.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {blog.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors cursor-pointer"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* Social Share Icons */}
           <div className="flex gap-3">
@@ -177,3 +233,4 @@ export default function BlogDetailPage() {
     </div>
   );
 }
+

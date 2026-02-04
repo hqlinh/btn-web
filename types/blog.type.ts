@@ -1,3 +1,5 @@
+import { MdStringObject } from "notion-to-md/build/types";
+
 export type Blog = {
   id: string;
   title: string;
@@ -9,5 +11,5 @@ export type Blog = {
 };
 
 export type BlogWithContent = Blog & {
-  content: string;
+  markdown: string,
 };
