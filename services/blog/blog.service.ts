@@ -28,7 +28,7 @@ class BlogService {
           direction: "descending",
         },
       ],
-      page_size: 10,
+      page_size: 12,
       start_cursor: cursor,
     });
 
